@@ -20,8 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Vaccine {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @NotNull

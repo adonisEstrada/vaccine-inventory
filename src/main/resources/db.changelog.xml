@@ -1,0 +1,211 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet author="adonis" id="1">
+        <createTable tableName="employees">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="employees_pkey"/>
+            </column>
+            <column name="dni" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mail" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_birth" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="adonis" id="2">
+        <createTable tableName="vaccines">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="vaccines_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="adonis" id="3">
+        <createTable tableName="users">
+            <column name="employee_id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="adonis" id="4">
+        <createTable tableName="users_roles">
+            <column name="user_id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="users_roles_pkey"/>
+            </column>
+            <column name="roles_id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="users_roles_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="adonis" id="5">
+        <createTable tableName="roles">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="roles_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="adonis" id="6">
+        <createTable tableName="permissions">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="permissions_pkey"/>
+            </column>
+            <column name="domain_action" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="adonis" id="7">
+        <createTable tableName="roles_permissions">
+            <column name="roles_id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="roles_permissions_pkey"/>
+            </column>
+            <column name="permissions_id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="roles_permissions_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="adonis" id="8">
+        <createTable tableName="employees_vaccines">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="employees_vaccines_pkey"/>
+            </column>
+            <column name="employee_id" type="UUID"></column>
+            <column name="vaccine_id" type="UUID"></column>
+            <column name="date" type="TIMESTAMP WITHOUT TIME ZONE"></column>
+            <column name="dose" type="VARCHAR(255)"></column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="employees_vaccines"
+                                 constraintName="employees_vaccines_employee_id_constraint" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="employees" validate="true"/>
+
+        <addForeignKeyConstraint baseColumnNames="vaccine_id" baseTableName="employees_vaccines"
+                                 constraintName="employees_vaccines_vaccine_id_constraint" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="vaccines" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="users"
+                                 constraintName="employees_users_id_constraint" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="employees" validate="true"/>
+    </changeSet>
+
+    <changeSet author="adonis" id="9">
+        <sql dbms="postgresql"
+             endDelimiter="\nGO"
+             stripComments="true">
+            INSERT INTO public.employees (id, dni, first_name, last_name, mail, date_of_birth, address, phone, status)
+            VALUES('14a803ee-bcc4-4dd9-abd8-a4725181e525', '1760920155', 'adonis', 'estrada',
+            'adonis.estrada123@gmail.com',
+            '2022-08-06 07:58:04', 'Quito', '0978907525', 'VACUNADO');
+
+            INSERT INTO public.users (employee_id, "password", username)
+            VALUES('14a803ee-bcc4-4dd9-abd8-a4725181e525', '123456', 'adonis.estrada');
+
+            INSERT INTO public.vaccines (id, "name", description) VALUES('f7218b89-d068-432e-a533-64fcd7d497a0',
+            'Sputnik', 'Sputnik');
+            INSERT INTO public.vaccines (id, "name", description) VALUES('087186d2-6225-42f6-8396-8e699e2fb013',
+            'AstraZeneca', 'AstraZeneca');
+            INSERT INTO public.vaccines (id, "name", description) VALUES('88cfac1c-7db3-4170-aa88-9df51a06b080',
+            'Pfizer', 'Pfizer');
+            INSERT INTO public.vaccines (id, "name", description) VALUES('4e2714bc-c7cb-4e38-9f21-b6268b68c1ed',
+            'JhonsonAndJhonson', 'JhonsonAndJhonson');
+
+            INSERT INTO public.employees_vaccines
+            (id, employee_id, vaccine_id, "date", dose)
+            VALUES('4af633cd-16c4-4a21-a556-358296e02d7a', '14a803ee-bcc4-4dd9-abd8-a4725181e525',
+            'f7218b89-d068-432e-a533-64fcd7d497a0', '2022-08-06 07:58:04', '1');
+
+            INSERT INTO public.employees_vaccines
+            (id, employee_id, vaccine_id, "date", dose)
+            VALUES('bbb36803-005c-43d4-b915-bc97f996be35', '14a803ee-bcc4-4dd9-abd8-a4725181e525',
+            '087186d2-6225-42f6-8396-8e699e2fb013', '2022-08-06 07:58:04', '2');
+
+            INSERT INTO public.employees_vaccines
+            (id, employee_id, vaccine_id, "date", dose)
+            VALUES('319e521f-d195-42cd-92cb-ba4deec2cd87', '14a803ee-bcc4-4dd9-abd8-a4725181e525',
+            '88cfac1c-7db3-4170-aa88-9df51a06b080', '2022-08-06 07:58:04', '3');
+
+            INSERT INTO public.employees_vaccines
+            (id, employee_id, vaccine_id, "date", dose)
+            VALUES('ac1b0f8b-bf18-4b59-8462-2176fc79eba6', '14a803ee-bcc4-4dd9-abd8-a4725181e525',
+            '4e2714bc-c7cb-4e38-9f21-b6268b68c1ed', '2022-08-06 07:58:04', '4');
+
+
+            INSERT INTO public.roles
+            (id, "name")
+            VALUES('9038fcc3-a8df-4384-93b6-7ec8e6b0e564', 'Administrador');
+            INSERT INTO public.roles
+            (id, "name")
+            VALUES('c696e789-1fbe-4fad-95a2-99d80b1c62bd', 'Empleado');
+            INSERT INTO public.permissions
+            (id, domain_action, "name")
+            VALUES('53d90568-b1ea-4fa3-a234-88063a571d83', 'ALLOW_ACTION_REGISTER', 'registrar');
+            INSERT INTO public.permissions
+            (id, domain_action, "name")
+            VALUES('57c57cc5-4750-4396-b158-d30061cbbaf7', 'ALLOW_ACTION_EDIT', 'editar');
+            INSERT INTO public.permissions
+            (id, domain_action, "name")
+            VALUES('bc54c320-5aa0-4e43-9dfb-74b7dc7fd5ff', 'ALLOW_ACTION_LIST', 'listar');
+            INSERT INTO public.permissions
+            (id, domain_action, "name")
+            VALUES('21c5186e-0874-4ace-bb85-bc0aa6f88cf2', 'ALLOW_ACTION_DELETE', 'eliminar');
+
+            INSERT INTO public.roles_permissions
+            (roles_id, permissions_id)
+            VALUES('9038fcc3-a8df-4384-93b6-7ec8e6b0e564', '53d90568-b1ea-4fa3-a234-88063a571d83');
+            INSERT INTO public.roles_permissions
+            (roles_id, permissions_id)
+            VALUES('9038fcc3-a8df-4384-93b6-7ec8e6b0e564', '57c57cc5-4750-4396-b158-d30061cbbaf7');
+            INSERT INTO public.roles_permissions
+            (roles_id, permissions_id)
+            VALUES('9038fcc3-a8df-4384-93b6-7ec8e6b0e564', 'bc54c320-5aa0-4e43-9dfb-74b7dc7fd5ff');
+            INSERT INTO public.roles_permissions
+            (roles_id, permissions_id)
+            VALUES('9038fcc3-a8df-4384-93b6-7ec8e6b0e564', '21c5186e-0874-4ace-bb85-bc0aa6f88cf2');
+            INSERT INTO public.roles_permissions
+            (roles_id, permissions_id)
+            VALUES('c696e789-1fbe-4fad-95a2-99d80b1c62bd', 'bc54c320-5aa0-4e43-9dfb-74b7dc7fd5ff');
+            INSERT INTO public.roles_permissions
+            (roles_id, permissions_id)
+            VALUES('c696e789-1fbe-4fad-95a2-99d80b1c62bd', '57c57cc5-4750-4396-b158-d30061cbbaf7');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

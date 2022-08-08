@@ -19,8 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class EmployeeVaccine {
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -30,12 +29,10 @@ public class EmployeeVaccine {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    @NotNull
     private Employee employee;
 
     @ManyToOne
     @JoinColumn(name = "vaccine_id")
-    @NotNull
     private Vaccine vaccine;
 
 

@@ -19,7 +19,7 @@ import java.util.UUID;
 @Builder
 public class Roles {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @Column(unique=true)
     @NotNull

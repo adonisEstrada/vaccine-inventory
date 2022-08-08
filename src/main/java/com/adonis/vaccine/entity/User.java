@@ -21,6 +21,7 @@ import java.util.UUID;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -33,16 +34,11 @@ public class User {
     @NotNull
     private String password;
 
-    private String fullName;
-    @NotNull
-    @Column(unique = true)
-
-    private String dni;
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @Builder.Default
     @JoinTable(name = "users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+            inverseJoinColumns = {@JoinColumn(name = "roles_id")})
     private Set<Roles> roles = new HashSet<>();
 
 }

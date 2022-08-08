@@ -14,15 +14,11 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserPresenter implements Comparable<UserPresenter> {
     private UUID id;
-    @NotNull
     private String userName;
-    @NotNull
     private String password;
-    @NotNull
     private String fullName;
-    @NotNull
     private String dni;
-    @NotNull
+    @Builder.Default
     private List<RolePresenter> rolePresenters = new ArrayList<>();
 
     public int compareTo(UserPresenter userPresenter) {
